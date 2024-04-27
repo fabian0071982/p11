@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | WebGL Test AR</title>
+    <script src="js/lib/aframe.min.js"></script>
+    <script src="js/lib/aframe-ar.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+    <script src="js/app.js"></script>
+</head>
+
+<body style="margin: 0px; overflow: hidden;">
+    <a-scene embedded arjs vr-mode-ui="enabled: false" copycanvas>
+        <div id="unityContainer" style="z-index: 2"></div>
+
+        <a-marker type="pattern" url="data/markers\Hiro.patt" markercontroller="name : Hiro"></a-marker>
+        <a-marker type="pattern" url="data/markers\Nutty.patt" markercontroller="name : Nutty"></a-marker>
+        <a-marker type="pattern" url="data/markers\NuttyCardboard.patt" markercontroller="name : NuttyCardboard"></a-marker>
+
+        <a-entity camera cameratransform></a-entity>
+    </a-scene>
+
+    <!-- Agregamos un botón para capturar la pantalla -->
+    <button onclick="captureScreenshot()">Capture Screenshot</button>
+
+    <script>
+        // Función para capturar la pantalla del navegador
+        function captureScreenshot() {
+            // Creamos un canvas temporal para almacenar la captura de pantalla
+            var canvas = document.createElement('canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            var ctx = canvas.getContext('2d');
+
+            // Dibujamos el contenido visible de la ventana del navegador en el canvas
+            ctx.drawWindow(window, 0, 0, window.innerWidth, window.innerHeight, "rgb(255,255,255)");
+
+            // Convertimos el canvas a una URL de datos (Data URL)
+            var screenshotDataUrl = canvas.toDataURL("image/png");
+
+            // Creamos un enlace para descargar la captura de pantalla
+            var a = document.createElement("a");
+            a.href = screenshotDataUrl;
+            a.download = "screenshot.png";
+            a.click();
+        }
+    </script>
+</body>
+</html>
+
